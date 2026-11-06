@@ -14,6 +14,10 @@ Un método para convertir un proceso que repites cada semana en una **fábrica**
 
 ## Nota sobre el contenido
 
-El kit original incluía además un PDF de una página (`mapa-de-tu-fabrica.pdf`) con el resumen visual del método; no está en este repositorio porque mi vía de publicación solo admite archivos de texto. El PDF queda en mi archivo local junto al kit original.
+El kit original incluye además `mapa-de-tu-fabrica.pdf`, el mapa visual del método resumido en una página, que se conserva junto al kit completo en el archivo de trabajo.
+
+## Flujo de referencia: la factory en paralelo
+
+Como complemento, este repositorio incluye [`flujo-paralelo.md`](flujo-paralelo.md): el esquema de fábrica con revisión en paralelo — seguridad, UX, UI y código revisan a la vez lo que construye el builder — y puerta humana que decide entre la ruta directa a `main` y la ruta de PR antes de producción. El esquema procede del vídeo [«Programar con agentes ya no basta: monta tu Software Factory»](https://youtu.be/p6nnqerea7w) de Eric Risco (parte 6 de su presentación). Combina bien con el kit: el cerebro y los puestos salen de estas plantillas; el orden de la línea, sus revisores en paralelo y sus puertas salen de ese esquema.
 
 Primera fábrica que pienso montar con este método: la revisión y destilación de los materiales y vídeos que estudio con mi agente — el mismo proceso con el que este kit llegó hasta aquí.
