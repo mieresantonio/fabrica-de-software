@@ -1,0 +1,40 @@
+{"t": "2026-11-03T09:05:00", "tipo": "inicio", "entrada": "export/errores.jsonl"}
+{"t": "2026-11-03T09:05:00", "tipo": "paso-inicio", "paso": "01-recoger", "intento": 1, "cmd": "python3 pasos/01-recoger.py export/errores.jsonl"}
+{"t": "2026-11-03T09:05:00", "tipo": "paso-fin", "paso": "01-recoger", "intento": 1, "ok": true, "codigo": 0, "segundos": 0.4, "log": "logs/01-recoger.log"}
+{"t": "2026-11-03T09:05:00", "tipo": "metrica", "paso": "01-recoger", "clave": "errores_unicos", "valor": 3.0}
+{"t": "2026-11-03T09:05:00", "tipo": "paso-inicio", "paso": "02-centinela", "intento": 1, "cmd": "python3 pasos/02-centinela.py"}
+{"t": "2026-11-03T09:05:00", "tipo": "paso-fin", "paso": "02-centinela", "intento": 1, "ok": true, "codigo": 0, "segundos": 0.2, "log": "logs/02-centinela.log"}
+{"t": "2026-11-03T09:05:00", "tipo": "metrica", "paso": "02-centinela", "clave": "descartados", "valor": 1.0}
+{"t": "2026-11-03T09:05:00", "tipo": "paso-inicio", "paso": "03-investigar", "intento": 1, "cmd": "claude -p …"}
+{"t": "2026-11-03T09:05:41", "tipo": "nota", "paso": "03-investigar", "nota_tipo": "decision", "texto": "9c56: dos hipótesis (producto borrado vs. carrito sin validar); me quedo con producto borrado: las 34 líneas afectadas tienen producto_id de productos con deleted_at"}
+{"t": "2026-11-03T09:06:36", "tipo": "paso-fin", "paso": "03-investigar", "intento": 1, "ok": true, "codigo": 0, "segundos": 96.0, "log": "logs/03-investigar.log"}
+{"t": "2026-11-03T09:06:36", "tipo": "metrica", "paso": "03-investigar", "clave": "coste_usd", "valor": 0.21}
+{"t": "2026-11-03T09:06:36", "tipo": "paso-inicio", "paso": "04-clasificar", "intento": 1, "cmd": "claude -p …"}
+{"t": "2026-11-03T09:06:54", "tipo": "nota", "paso": "04-clasificar", "nota_tipo": "decision", "texto": "c6a2: ticket y no arreglo: la pasarela no tiene saldo, hay que recargarla a mano"}
+{"t": "2026-11-03T09:07:00", "tipo": "paso-fin", "paso": "04-clasificar", "intento": 1, "ok": true, "codigo": 0, "segundos": 24.0, "log": "logs/04-clasificar.log"}
+{"t": "2026-11-03T09:07:00", "tipo": "metrica", "paso": "04-clasificar", "clave": "ticket", "valor": 1.0}
+{"t": "2026-11-03T09:07:00", "tipo": "metrica", "paso": "04-clasificar", "clave": "arreglo", "valor": 1.0}
+{"t": "2026-11-03T09:07:00", "tipo": "metrica", "paso": "04-clasificar", "clave": "coste_usd", "valor": 0.04}
+{"t": "2026-11-03T09:07:00", "tipo": "paso-inicio", "paso": "05-arreglar", "intento": 1, "cmd": "claude -p …"}
+{"t": "2026-11-03T09:08:20", "tipo": "nota", "paso": "05-arreglar", "nota_tipo": "decision", "texto": "9c56: uso linea.precio_unitario en lugar de tratar el null; el dato ya existía en el esquema"}
+{"t": "2026-11-03T09:09:22", "tipo": "paso-fin", "paso": "05-arreglar", "intento": 1, "ok": true, "codigo": 0, "segundos": 142.0, "log": "logs/05-arreglar.log"}
+{"t": "2026-11-03T09:09:22", "tipo": "metrica", "paso": "05-arreglar", "clave": "coste_usd", "valor": 0.38}
+{"t": "2026-11-03T09:09:22", "tipo": "paso-inicio", "paso": "06-tests", "intento": 1, "cmd": "bash pasos/06-tests.sh"}
+{"t": "2026-11-03T09:09:53", "tipo": "paso-fin", "paso": "06-tests", "intento": 1, "ok": false, "codigo": 1, "segundos": 31.0, "log": "logs/06-tests.log", "motivo": "fabrica/9c56: tests o linter en rojo"}
+{"t": "2026-11-03T09:09:53", "tipo": "paso-inicio", "paso": "05-arreglar", "intento": 2, "cmd": "claude -p …"}
+{"t": "2026-11-03T09:10:41", "tipo": "paso-fin", "paso": "05-arreglar", "intento": 2, "ok": true, "codigo": 0, "segundos": 48.0, "log": "logs/05-arreglar.intento2.log"}
+{"t": "2026-11-03T09:10:41", "tipo": "metrica", "paso": "05-arreglar", "clave": "coste_usd", "valor": 0.12}
+{"t": "2026-11-03T09:10:41", "tipo": "paso-inicio", "paso": "06-tests", "intento": 2, "cmd": "bash pasos/06-tests.sh"}
+{"t": "2026-11-03T09:11:10", "tipo": "paso-fin", "paso": "06-tests", "intento": 2, "ok": true, "codigo": 0, "segundos": 29.0, "log": "logs/06-tests.intento2.log"}
+{"t": "2026-11-03T09:11:10", "tipo": "paso-inicio", "paso": "07-revisar", "intento": 2, "cmd": "claude -p …"}
+{"t": "2026-11-03T09:11:40", "tipo": "nota", "paso": "07-revisar", "nota_tipo": "decision", "texto": "9c56: criterio 4 justo: el cambio también afecta al total de pedidos antiguos, pero da el mismo resultado porque precio_unitario se guarda desde 2024"}
+{"t": "2026-11-03T09:11:49", "tipo": "paso-fin", "paso": "07-revisar", "intento": 2, "ok": true, "codigo": 0, "segundos": 39.0, "log": "logs/07-revisar.intento2.log"}
+{"t": "2026-11-03T09:11:49", "tipo": "metrica", "paso": "07-revisar", "clave": "coste_usd", "valor": 0.09}
+{"t": "2026-11-03T09:11:49", "tipo": "paso-inicio", "paso": "08-preparar-salida", "intento": 1, "cmd": "bash pasos/08-preparar-salida.sh"}
+{"t": "2026-11-03T09:11:53", "tipo": "nota", "paso": "08-preparar-salida", "nota_tipo": "espera-ok", "texto": "PR en borrador: https://github.com/tu-equipo/api/pull/482 · espera que la pruebes y la mergees"}
+{"t": "2026-11-03T09:11:53", "tipo": "nota", "paso": "08-preparar-salida", "nota_tipo": "espera-ok", "texto": "Ticket listo para crear: runs/2026-11-03-0905-a1f3/tickets/c6a2.md"}
+{"t": "2026-11-03T09:11:54", "tipo": "paso-fin", "paso": "08-preparar-salida", "intento": 1, "ok": true, "codigo": 0, "segundos": 5.0, "log": "logs/08-preparar-salida.log"}
+{"t": "2026-11-03T09:11:54", "tipo": "paso-inicio", "paso": "informe", "intento": 1, "cmd": "claude -p …"}
+{"t": "2026-11-03T09:12:16", "tipo": "paso-fin", "paso": "informe", "intento": 1, "ok": true, "codigo": 0, "segundos": 22.0, "log": "logs/informe.log"}
+{"t": "2026-11-03T09:12:16", "tipo": "metrica", "paso": "informe", "clave": "coste_usd", "valor": 0.02}
+{"t": "2026-11-03T09:12:17", "tipo": "fin", "resultado": "espera-ok", "motivo": "", "segundos": 437.6}

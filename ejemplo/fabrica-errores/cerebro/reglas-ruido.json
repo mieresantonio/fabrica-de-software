@@ -1,0 +1,8 @@
+{
+  "umbral_pico": 10,
+  "reglas": [
+    {"id": "bots-404", "si_mensaje_contiene": "Not Found", "y_ruta_empieza_por": ["/wp-admin", "/.env", "/phpmyadmin"], "media_diaria": 120},
+    {"id": "cliente-cancela", "si_mensaje_contiene": "ECONNRESET", "y_origen": "cliente", "media_diaria": 40},
+    {"id": "token-caducado", "si_mensaje_contiene": "jwt expired", "media_diaria": 25}
+  ]
+}

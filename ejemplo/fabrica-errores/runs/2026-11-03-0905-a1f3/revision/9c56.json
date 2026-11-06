@@ -1,0 +1,30 @@
+{
+  "veredicto": "OK",
+  "criterios": [
+    {
+      "n": 1,
+      "cumple": true,
+      "motivo": "usa precio_unitario: arregla la causa, no silencia el null"
+    },
+    {
+      "n": 2,
+      "cumple": true,
+      "motivo": "el test monta un pedido con producto borrado, como en el diagnóstico"
+    },
+    {
+      "n": 3,
+      "cumple": true,
+      "motivo": "lógica en services/, sin throw new Error"
+    },
+    {
+      "n": 4,
+      "cumple": true,
+      "motivo": "justo: mismo resultado para pedidos antiguos (ver nota)"
+    },
+    {
+      "n": 5,
+      "cumple": true,
+      "motivo": "la descripción explica error, causa y comprobación"
+    }
+  ]
+}

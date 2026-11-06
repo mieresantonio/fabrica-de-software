@@ -1,0 +1,8 @@
+[
+  {"firma": "a91c", "mensaje": "Not Found /wp-admin/setup.php", "decision": "ruido",
+   "motivo": "Bots buscando WordPress; regla bots-404, 96 eventos (media 120)."},
+  {"firma": "7f02", "mensaje": "PaymentProviderError: insufficient balance", "decision": "ticket",
+   "motivo": "La cuenta de la pasarela se ha quedado sin saldo: hay que recargarla a mano. No es código."},
+  {"firma": "c3d8", "mensaje": "TypeError: Cannot read properties of null (reading 'precio') at services/pedidos.ts:88", "decision": "arreglo",
+   "motivo": "calcularTotal no contempla líneas de pedido sin producto (producto borrado). Se reproduce con un test; arreglo acotado a services/pedidos.ts."}
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "firma": "d753",
+    "mensaje": "Not Found /wp-admin/setup.php",
+    "ruta": "/wp-admin/setup.php",
+    "origen": "bot",
+    "stack": "",
+    "veces": 96,
+    "primera": "2026-11-02T00:00:00",
+    "ultima": "2026-11-02T23:35:00",
+    "regla": "bots-404"
+  }
+]

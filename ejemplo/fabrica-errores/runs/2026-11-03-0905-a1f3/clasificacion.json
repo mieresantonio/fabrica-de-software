@@ -1,0 +1,14 @@
+[
+  {
+    "firma": "c6a2",
+    "mensaje": "PaymentProviderError: insufficient balance",
+    "decision": "ticket",
+    "motivo": "La cuenta de la pasarela no tiene saldo: hay que recargarla a mano. No es código."
+  },
+  {
+    "firma": "9c56",
+    "mensaje": "TypeError: Cannot read properties of null (reading 'precio')",
+    "decision": "arreglo",
+    "motivo": "calcularTotal no contempla líneas cuyo producto se ha borrado. Se reproduce con un test; arreglo acotado a services/pedidos.ts."
+  }
+]

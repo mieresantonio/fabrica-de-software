@@ -1,0 +1,10 @@
+[
+  {
+    "firma": "9c56",
+    "rama": "fabrica/9c56",
+    "ficheros": [
+      "src/services/pedidos.ts"
+    ],
+    "test": "test/services/pedidos.test.ts"
+  }
+]

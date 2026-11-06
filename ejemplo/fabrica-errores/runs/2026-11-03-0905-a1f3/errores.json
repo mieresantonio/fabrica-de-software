@@ -1,0 +1,32 @@
+[
+  {
+    "firma": "d753",
+    "mensaje": "Not Found /wp-admin/setup.php",
+    "ruta": "/wp-admin/setup.php",
+    "origen": "bot",
+    "stack": "",
+    "veces": 96,
+    "primera": "2026-11-02T00:00:00",
+    "ultima": "2026-11-02T23:35:00"
+  },
+  {
+    "firma": "c6a2",
+    "mensaje": "PaymentProviderError: insufficient balance",
+    "ruta": "/checkout",
+    "origen": "servidor",
+    "stack": "PaymentProviderError: insufficient balance\n    at cobrar (src/services/pagos.ts:41:11)",
+    "veces": 3,
+    "primera": "2026-11-02T10:00:00",
+    "ultima": "2026-11-02T10:02:00"
+  },
+  {
+    "firma": "9c56",
+    "mensaje": "TypeError: Cannot read properties of null (reading 'precio')",
+    "ruta": "/pedidos/total",
+    "origen": "servidor",
+    "stack": "TypeError: Cannot read properties of null (reading 'precio')\n    at calcularTotal (src/services/pedidos.ts:88:31)",
+    "veces": 34,
+    "primera": "2026-11-02T00:15:00",
+    "ultima": "2026-11-02T09:15:00"
+  }
+]
