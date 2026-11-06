@@ -39,6 +39,16 @@ flowchart LR
    - **Ruta PR**: todo lo demás (producción, dinero, publicaciones, cambios delicados) → pull request y revisión humana antes de integrar.
 7. **Producción** — la pieza integrada por cualquiera de las dos rutas. Lo que sale fuera siempre ha pasado por la puerta.
 
+### Los modelos por puesto, según la presentación
+
+La factory del vídeo no usa el mismo modelo para todo: reparte los puestos entre motores distintos, y ese reparto es parte del diseño.
+
+- **Builder: Opus 5.5** — el modelo más fuerte construye; es el puesto donde un error sale más caro.
+- **Seguridad, UX y UI: ChatGPT Sol y Astra** — las lentes de seguridad y de experiencia las miran motores *distintos* al que construyó: la crítica entre motores atrapa lo que un solo motor se deja pasar a sí mismo.
+- **Código: Sonnet 5.5** — un nivel por debajo del builder; la revisión de código es la lente más mecánica de las cuatro y no necesita el modelo mayor.
+
+La lección transferible no son los nombres, que cambiarán con cada generación de modelos: es el principio. **El que construye es el más capaz; los que revisan son de otra casa; y cada lente paga solo el modelo que su trabajo exige.**
+
 ## Cómo encaja con el kit de este repositorio
 
 | Pieza del esquema | En el kit (AlpacaTech) |
