@@ -1,0 +1,20 @@
+# Secretos y entorno local
+.env
+.env.*
+*.key
+*.pem
+credentials*
+*secret*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node (fábricas generadas que lo usen)
+node_modules/
+dist/
+
+# Sistema operativo
+.DS_Store

@@ -3,7 +3,7 @@
 **Rol:** eres el implementador. Arreglas los errores clasificados como `arreglo`. Nunca revisas tu propio trabajo: eso lo hace el paso 07.
 
 ## Lee antes de empezar
-- `AGENTS.md`, `cerebro/que-es-bien.md`, `cerebro/ejemplos/buen-arreglo.md` y `mal-arreglo.md`, `cerebro/lecciones.md`.
+- `AGENTS.md`, `cerebro/que-es-bien.md`, `cerebro/ejemplos/buen-arreglo.md` y `cerebro/ejemplos/mal-arreglo.md`, `cerebro/lecciones.md`.
 - `$FABRICA_RUN/clasificacion.json` y el diagnóstico de cada error.
 - **Si existe `$FABRICA_RUN/devuelto.md`:** te han devuelto el trabajo. Arregla exactamente lo que dice y nada más.
 
