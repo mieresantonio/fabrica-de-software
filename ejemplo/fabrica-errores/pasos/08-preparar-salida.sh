@@ -9,7 +9,8 @@ for f in "$FABRICA_RUN"/revision/*.json; do
   rama="fabrica/$firma"
   git -C "$REPO" push -q -u origin "$rama" || { echo "no se pudo subir $rama"; exit 1; }
   url=$(cd "$REPO" && gh pr create --draft --base main --head "$rama" --label fabrica \
-        --title "fix: error $firma (fábrica)" --body-file "$FABRICA_RUN/diagnostico/$firma.md")
+        --title "fix: error $firma (fábrica)" --body-file "$FABRICA_RUN/diagnostico/$firma.md") \
+    || { echo "no se pudo crear la PR en borrador para $rama"; exit 1; }
   $OBS nota "$FABRICA_RUN" 08-preparar-salida "PR en borrador: $url · espera que la pruebes y la mergees" --tipo espera-ok
 done
 for t in "$FABRICA_RUN"/tickets/*.md; do

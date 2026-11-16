@@ -2,6 +2,7 @@
 # Lanza UN paso de agente en modo no interactivo. Uso: bash pasos/agente.sh <paso> [modelo] [texto extra para el prompt]
 # - Las instrucciones del paso están en pasos/<paso>.md.
 # - Permisos mínimos: leer, escribir en runs/, llamar a obs.py y git de solo lectura. Nunca push, tag ni gh.
+#   Excepciones con su bloque abajo: 03-investigar hace git pull, 05-arreglar trabaja en su rama.
 # - Apunta el coste del paso (coste_usd) si el agente lo devuelve.
 # - Falla si la última línea del agente empieza por «FALLO», o si ha tocado el repo fuera de runs/.
 #
@@ -28,6 +29,14 @@ PERMISOS_EXTRA=""; GUARDIA=1
 if [ "$PASO" = "05-arreglar" ]; then
   PERMISOS_EXTRA=",Bash(git -C $REPO switch:*),Bash(git -C $REPO add:*),Bash(git -C $REPO commit:*),Bash(npm test:*)"
   GUARDIA=0   # cambia el repo a propósito (en su rama); lo vigilan 06-tests y 07-revisar
+fi
+
+# ── PERMISOS 03: el investigador hace git pull (lo ordena 03-investigar.md) ──
+# Sin este permiso, en modo no interactivo el pull se deniega y el paso
+# investiga sobre código desactualizado. El pull no cambia git status
+# (el árbol queda limpio), así que la guardia sigue vigente para 03.
+if [ "$PASO" = "03-investigar" ]; then
+  PERMISOS_EXTRA="$PERMISOS_EXTRA,Bash(git -C $REPO pull:*)"
 fi
 
 # ── LLAMADA (el prompt va por stdin: así ningún flag de varios valores se lo traga) ──

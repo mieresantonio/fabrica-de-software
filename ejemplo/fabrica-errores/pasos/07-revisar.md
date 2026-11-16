@@ -11,7 +11,7 @@ Para cada rama, puntúa los 5 criterios de la rúbrica como CUMPLE / NO CUMPLE, 
 
 ## Salida
 - `$FABRICA_RUN/revision/<firma>.json`: `{veredicto: "OK" | "DEVOLVER", criterios: [...]}`.
-- Si **alguna** rama es DEVOLVER: imprime qué hay que cambiar en cada rama, con el formato «`<rama>`: criterio N · qué cambiar», y **termina con error**. Eso devuelve el trabajo al paso 05.
+- Si **alguna** rama es DEVOLVER: imprime qué hay que cambiar en cada rama, con el formato «`<rama>`: criterio N · qué cambiar», y **termina con error**, con una última línea que empiece por `FALLO:` y el motivo. Esa línea es como `agente.sh` detecta la devolución: sin ella, la fábrica no sabría que tiene que volver al paso 05.
 
 ## Telemetría
 Si algo cumple por poco, apúntalo: `obs.py nota "$FABRICA_RUN" 07-revisar "<firma>: criterio 3 justo porque…"`.

@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+"""claude falso para prueba-completa.sh: respuestas guionadas y deterministas por paso.
+
+Ocupa el lugar de `claude -p` en el PATH durante la prueba completa. Lee el
+prompt por stdin (como hace agente.sh), deduce el paso por su primera línea
+(«Eres el paso <paso> de esta fábrica») y ejecuta el guion de ese paso:
+escribe exactamente los artefactos que escribiría el agente real
+(diagnósticos, clasificacion.json, ramas con el arreglo, revisión,
+informe.md) y responde un JSON como el de `claude -p --output-format json`
+(result + total_cost_usd).
+
+No razona ni llama a ningún modelo: todo está guionado a partir de los
+candidatos reales de la ejecución, así que si la entrada o los pasos de
+código cambian, el guion sigue lo que encuentra (decide por el mensaje
+del error, nunca por firmas fijas).
+
+Sabotaje (para probar que la prueba no es vacua), por variable de entorno:
+  FABRICA_PRUEBA_SABOTAJE=07   el paso 07 devuelve FALLO: (la fábrica debe
+                               reintentar y terminar en fallo)
+"""
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+RUN = Path(os.environ["FABRICA_RUN"])
+REPO = Path(os.environ.get("REPO", ""))
+FABRICA = RUN.parent.parent  # runs/<id> -> raíz del ejemplo
+SABOTAJE = os.environ.get("FABRICA_PRUEBA_SABOTAJE", "")
+OBS = [sys.executable, str(FABRICA / "herramientas" / "obs.py")]
+
+
+def resultado(texto, coste=0.01):
+    """La única salida: un JSON como el de claude -p. Nada por stderr."""
+    print(json.dumps({"result": texto, "total_cost_usd": coste,
+                      "is_error": False}, ensure_ascii=False))
+    sys.exit(0)
+
+
+def obs(*args):
+    subprocess.run([*OBS, *args], check=True, capture_output=True, text=True)
+
+
+def git(*args):
+    subprocess.run(["git", "-C", str(REPO), *args], check=True,
+                   capture_output=True, text=True)
+
+
+def leer_json(path):
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def es_error_codigo(mensaje):
+    return "TypeError" in mensaje
+
+
+def es_error_operativo(mensaje):
+    return "PaymentProviderError" in mensaje
+
+
+def paso_03():
+    """Investigar: un diagnóstico por candidato, según su mensaje."""
+    candidatos = leer_json(RUN / "candidatos.json")
+    (RUN / "diagnostico").mkdir(exist_ok=True)
+    for c in candidatos:
+        firma, mensaje = c["firma"], c["mensaje"]
+        if es_error_codigo(mensaje):
+            causa = ("calcularTotal lee .precio de un producto null: la línea "
+                     "es de un producto borrado")
+            fichero, reproduce, confianza = ("src/carrito.js: calcularTotal",
+                                             "sí, con un test que monte una línea con producto null",
+                                             "alta")
+        elif es_error_operativo(mensaje):
+            causa = "la cuenta de la pasarela no tiene saldo"
+            fichero, reproduce, confianza = ("src/pago.js: cobrar",
+                                             "no: no es código, es saldo de la cuenta",
+                                             "alta")
+        else:
+            causa, fichero = "desconocida: no se encontró el origen", "?"
+            reproduce, confianza = "no", "baja"
+        (RUN / "diagnostico" / f"{firma}.md").write_text(
+            f"# Diagnóstico {firma}\n\n"
+            f"- Síntoma: {mensaje}\n"
+            f"- Veces: {c['veces']} · desde {c['primera']}\n"
+            f"- Causa probable: {causa}\n"
+            f"- Fichero: {fichero}\n"
+            f"- ¿Se reproduce? {reproduce}\n"
+            f"- Confianza: {confianza}\n"
+            f"- Lecciones relacionadas: ninguna\n", encoding="utf-8")
+        if confianza != "alta":
+            obs("nota", str(RUN), "03-investigar",
+                f"{firma}: causa no evidente, confianza {confianza}")
+    resultado(f"Diagnóstico escrito para {len(candidatos)} candidatos.")
+
+
+def paso_04():
+    """Clasificar: el TypeError es arreglo, el de la pasarela es ticket,
+    lo que no se entienda es ticket por confianza baja (regla de 04)."""
+    candidatos = leer_json(RUN / "candidatos.json")
+    clasificacion, cuentas = [], {"ruido": 0, "ticket": 0, "arreglo": 0}
+    (RUN / "tickets").mkdir(exist_ok=True)
+    for c in candidatos:
+        firma, mensaje = c["firma"], c["mensaje"]
+        if es_error_codigo(mensaje):
+            decision = "arreglo"
+            motivo = ("calcularTotal no contempla líneas cuyo producto se ha "
+                      "borrado. Se reproduce con un test; arreglo acotado a "
+                      "src/carrito.js.")
+        elif es_error_operativo(mensaje):
+            decision = "ticket"
+            motivo = ("la cuenta de la pasarela no tiene saldo: hay que "
+                      "recargarla a mano. No es código.")
+            (RUN / "tickets" / f"{firma}.md").write_text(
+                f"# Ticket {firma}: recargar el saldo de la pasarela\n\n"
+                f"Síntoma: {mensaje}\n\n"
+                f"Causa: la cuenta de la pasarela no tiene saldo.\n\n"
+                f"Acción humana: recargar la cuenta en el panel del proveedor "
+                f"y confirmar que los cobros vuelven a pasar.\n",
+                encoding="utf-8")
+        else:
+            decision = "ticket"
+            motivo = "causa con confianza baja: que lo mire una persona."
+        cuentas[decision] += 1
+        clasificacion.append({"firma": firma, "mensaje": mensaje,
+                              "decision": decision, "motivo": motivo})
+    (RUN / "clasificacion.json").write_text(
+        json.dumps(clasificacion, ensure_ascii=False, indent=2), encoding="utf-8")
+    for decision, n in cuentas.items():
+        obs("metrica", str(RUN), "04-clasificar", decision, str(n))
+    resultado("Clasificación: "
+              f"{cuentas['arreglo']} arreglo, {cuentas['ticket']} ticket, "
+              f"{cuentas['ruido']} ruido.")
+
+
+CARRITO_ARREGLADO = '''// Carrito de ejemplo: calcularTotal suma precio*cantidad por línea.
+//
+// Las líneas de productos borrados (producto null) suman 0 en vez de romper:
+// el pedido existió y su total es el de las líneas que quedan.
+function calcularTotal(lineas) {
+  return lineas.reduce(
+    (total, linea) => total + (linea.producto ? linea.producto.precio : 0) * linea.cantidad, 0);
+}
+
+module.exports = { calcularTotal };
+'''
+
+TESTS_ARREGLADOS = '''const test = require("node:test");
+const assert = require("node:assert/strict");
+const { calcularTotal } = require("../src/carrito");
+
+test("suma precio por cantidad", () => {
+  assert.equal(calcularTotal([{ producto: { precio: 10 }, cantidad: 2 }]), 20);
+});
+
+test("carrito vacío suma 0", () => {
+  assert.equal(calcularTotal([]), 0);
+});
+
+test("ignora líneas con producto borrado (null)", () => {
+  assert.equal(
+    calcularTotal([
+      { producto: { precio: 10 }, cantidad: 2 },
+      { producto: null, cantidad: 1 },
+    ]),
+    20
+  );
+});
+'''
+
+
+def paso_05():
+    """Arreglar: por cada error `arreglo`, rama fabrica/<firma> desde main,
+    test de regresión + arreglo de la causa, commit. Idempotente: si la rama
+    ya existe (reintento del loop), la reutiliza y solo commitea si hay cambios."""
+    clasificacion = leer_json(RUN / "clasificacion.json")
+    arreglos = []
+    for c in clasificacion:
+        if c["decision"] != "arreglo":
+            continue
+        firma, rama = c["firma"], f"fabrica/{c['firma']}"
+        existe = subprocess.run(
+            ["git", "-C", str(REPO), "show-ref", "--verify", "--quiet",
+             f"refs/heads/{rama}"], capture_output=True).returncode == 0
+        git("switch", rama) if existe else git("switch", "-c", rama, "main")
+        (REPO / "src" / "carrito.js").write_text(CARRITO_ARREGLADO, encoding="utf-8")
+        (REPO / "test" / "carrito.test.js").write_text(TESTS_ARREGLADOS, encoding="utf-8")
+        git("add", "src/carrito.js", "test/carrito.test.js")
+        sucio = subprocess.run(
+            ["git", "-C", str(REPO), "status", "--porcelain"],
+            capture_output=True, text=True).stdout.strip()
+        if sucio:
+            git("commit", "-m",
+                f"fix(carrito): {c['mensaje'][:60]} (fabrica {firma})")
+        arreglos.append({"firma": firma, "rama": rama,
+                         "ficheros": ["src/carrito.js"],
+                         "test": "test/carrito.test.js"})
+    (RUN / "arreglos.json").write_text(
+        json.dumps(arreglos, ensure_ascii=False, indent=2), encoding="utf-8")
+    resultado(f"{len(arreglos)} arreglo(s) en su rama, con test de regresión.")
+
+
+def paso_07():
+    """Revisar: OK con los 5 criterios CUMPLE, salvo sabotaje (07)."""
+    arreglos = leer_json(RUN / "arreglos.json")
+    (RUN / "revision").mkdir(exist_ok=True)
+    if SABOTAJE == "07":
+        for a in arreglos:
+            (RUN / "revision" / f"{a['firma']}.json").write_text(
+                json.dumps({"veredicto": "DEVOLVER",
+                            "criterios": [{"n": 2, "cumple": False,
+                                          "motivo": "sabotaje de prueba"}]},
+                           ensure_ascii=False, indent=2), encoding="utf-8")
+        resultado(f"{arreglos[0]['rama']}: criterio 2 · el test no cubre el caso\n"
+                  "FALLO: revisión devuelta (sabotaje de prueba)")
+    for a in arreglos:
+        criterios = [{"n": n, "cumple": True,
+                      "motivo": m} for n, m in [
+            (1, "arregla la causa: el null suma 0 en vez de romper"),
+            (2, "el test monta una línea con producto null, como en el diagnóstico"),
+            (3, "lógica en src/, sin throw ni silencios"),
+            (4, "mismo resultado para pedidos sin productos borrados"),
+            (5, "el commit explica error, causa y comprobación"),
+        ]]
+        (RUN / "revision" / f"{a['firma']}.json").write_text(
+            json.dumps({"veredicto": "OK", "criterios": criterios},
+                       ensure_ascii=False, indent=2), encoding="utf-8")
+    resultado("Revisión OK: todas las ramas cumplen la rúbrica.")
+
+
+def paso_informe():
+    """Informe: cuenta lo que pasó, con la URL de la PR si la hay."""
+    eventos = [json.loads(l) for l in
+               (RUN / "eventos.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    pr = next((e["texto"] for e in eventos
+               if e.get("tipo") == "nota" and "PR en borrador:" in e.get("texto", "")), "")
+    clasificacion = leer_json(RUN / "clasificacion.json")
+    descartados = leer_json(RUN / "descartados.json")
+    (RUN / "informe.md").write_text(
+        "# Informe de la ejecución (prueba completa)\n\n"
+        "## Resultado\n\n"
+        "La ejecución termina en espera-ok: hay salida lista para tu OK.\n\n"
+        "## Qué salió de cada error\n\n" +
+        "".join(f"- {c['firma']}: {c['decision']} — {c['motivo']}\n"
+                for c in clasificacion) +
+        "".join(f"- {d['firma']}: descartado por la regla {d['regla']}\n"
+                for d in descartados) +
+        (f"\n## Espera tu OK\n\n- {pr}\n" if pr else "\n") +
+        "\n## Decisiones de la fábrica\n\n"
+        "Ninguna dudosa: la clasificación siguió el diagnóstico.\n",
+        encoding="utf-8")
+    resultado("Informe escrito en informe.md.")
+
+
+PASOS = {"03-investigar": paso_03, "04-clasificar": paso_04,
+         "05-arreglar": paso_05, "07-revisar": paso_07,
+         "informe": paso_informe}
+
+
+def main():
+    prompt = sys.stdin.read()
+    m = re.search(r"Eres el paso (\S+) de esta fábrica", prompt)
+    paso = m.group(1) if m else ""
+    fn = PASOS.get(paso)
+    if fn is None:
+        resultado(f"FALLO: paso sin guion en el claude falso: {paso!r}")
+    fn()
+
+
+if __name__ == "__main__":
+    main()

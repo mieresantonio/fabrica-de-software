@@ -1,0 +1,1 @@
+{"description":"Repo API falso para prueba-completa.sh: proyecto Node mínimo sin dependencias, con tests en verde en main.","name":"api-ejemplo","private":true,"scripts":{"lint":"node --check src/carrito.js && node --check test/carrito.test.js","test":"node --test test/*.test.js"},"version":"0.1.0"}

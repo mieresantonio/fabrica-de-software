@@ -1,0 +1,99 @@
+{
+  "_nota": "Casos para prueba-centinela.sh. Cada caso genera `veces` eventos idénticos (mismo mensaje y stack, así que 01-recoger los agrupa en un solo error único con ese `veces`) y comprueba si 02-centinela lo descarta (con qué regla) o lo pasa a candidato. Los casos de pico/frontera clavan la comparación estricta `>` de 02-centinela.py: 11x la media pasa a candidato, 10x exactos sigue siendo ruido.",
+  "casos": [
+    {
+      "espera": "descartado",
+      "id": "bots-404-casa",
+      "mensaje": "Not Found /wp-admin/setup.php",
+      "origen": "web",
+      "regla": "bots-404",
+      "ruta": "/wp-admin/setup.php",
+      "stack": "Error: Not Found\n    at router (/app/server.js:42:15)",
+      "veces": 2
+    },
+    {
+      "espera": "candidato",
+      "id": "bots-404-ruta-distinta",
+      "mensaje": "Not Found /api/usuarios/999",
+      "origen": "api",
+      "ruta": "/api/usuarios/999",
+      "stack": "Error: Not Found\n    at router (/app/server.js:42:15)",
+      "veces": 2
+    },
+    {
+      "espera": "candidato",
+      "id": "bots-404-mensaje-parecido",
+      "mensaje": "NotFoundError: usuario 999 no existe",
+      "origen": "web",
+      "ruta": "/wp-admin/usuarios",
+      "stack": "NotFoundError: usuario 999 no existe\n    at buscar (/app/usuarios.js:17:11)",
+      "veces": 2
+    },
+    {
+      "espera": "descartado",
+      "id": "cliente-cancela-casa",
+      "mensaje": "ECONNRESET: conexión cerrada por el cliente",
+      "origen": "cliente",
+      "regla": "cliente-cancela",
+      "ruta": "/api/descarga",
+      "stack": "Error: read ECONNRESET\n    at Socket.onerror (/app/server.js:90:5)",
+      "veces": 3
+    },
+    {
+      "espera": "candidato",
+      "id": "cliente-cancela-origen-distinto",
+      "mensaje": "ECONNRESET: conexión cerrada por el cliente",
+      "origen": "api",
+      "ruta": "/api/descarga",
+      "stack": "Error: read ECONNRESET\n    at Socket.onerror (/app/server.js:90:5)",
+      "veces": 3
+    },
+    {
+      "espera": "descartado",
+      "id": "token-caducado-casa",
+      "mensaje": "JsonWebTokenError: jwt expired",
+      "origen": "api",
+      "regla": "token-caducado",
+      "ruta": "/api/sesion",
+      "stack": "JsonWebTokenError: jwt expired\n    at verificar (/app/auth.js:55:9)",
+      "veces": 5
+    },
+    {
+      "espera": "candidato",
+      "id": "token-mensaje-parecido",
+      "mensaje": "JsonWebTokenError: jwt malformed",
+      "origen": "api",
+      "ruta": "/api/sesion",
+      "stack": "JsonWebTokenError: jwt malformed\n    at verificar (/app/auth.js:55:9)",
+      "veces": 2
+    },
+    {
+      "espera": "candidato",
+      "id": "bots-404-pico-11x",
+      "mensaje": "Not Found /wp-admin/setup.php",
+      "origen": "web",
+      "ruta": "/wp-admin/setup.php",
+      "stack": "Error: Not Found\n    at router (/app/server.js:42:15)",
+      "veces": 1320
+    },
+    {
+      "espera": "descartado",
+      "id": "bots-404-frontera-10x",
+      "mensaje": "Not Found /wp-admin/setup.php",
+      "origen": "web",
+      "regla": "bots-404",
+      "ruta": "/wp-admin/setup.php",
+      "stack": "Error: Not Found\n    at router (/app/server.js:42:15)",
+      "veces": 1200
+    },
+    {
+      "espera": "candidato",
+      "id": "token-caducado-pico-11x",
+      "mensaje": "JsonWebTokenError: jwt expired",
+      "origen": "api",
+      "ruta": "/api/sesion",
+      "stack": "JsonWebTokenError: jwt expired\n    at verificar (/app/auth.js:55:9)",
+      "veces": 275
+    }
+  ]
+}

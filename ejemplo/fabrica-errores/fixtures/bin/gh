@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# gh falso para prueba-completa.sh: `gh pr create` devuelve una URL de PR
+# inventada y determinista. Cualquier otra orden falla: el guion solo cubre
+# lo que usa el paso 08.
+#
+# Sabotaje (para probar que la prueba no es vacua):
+#   FABRICA_PRUEBA_SABOTAJE=gh   gh pr create falla (08 debe fallar en voz
+#                                alta, no anotar una URL vacía)
+set -uo pipefail
+if [ "${FABRICA_PRUEBA_SABOTAJE:-}" = "gh" ]; then
+  echo "gh falso: error simulado (sabotaje de prueba)" >&2
+  exit 1
+fi
+if [ "${1:-}" = "pr" ] && [ "${2:-}" = "create" ]; then
+  echo "https://github.com/fabrica-ejemplo/api/pull/1"
+  exit 0
+fi
+echo "gh falso: orden no guionada: $*" >&2
+exit 1
