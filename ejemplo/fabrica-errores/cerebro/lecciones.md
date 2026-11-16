@@ -8,6 +8,6 @@ La fábrica lee este fichero antes de cada ejecución. Cada fallo se arregla **u
 - **Cómo se comprueba:** criterio 1 de la rúbrica del revisor (07).
 
 ## 2026-10-27 · 02 centinela
-- **Qué pasó:** se descartaron como ruido los `ECONNRESET` del servicio de emails, pero ese día eran 400 y era una caída real.
+- **Qué pasó:** se descartaron como ruido los `ECONNRESET` del servicio de emails, pero ese día pasaron de 400 y era una caída real.
 - **Regla:** un error de la lista de ruido deja de ser ruido si supera 10× su media diaria. Pasa a investigar y luego a ticket.
 - **Cómo se comprueba:** `umbral_pico` en `reglas-ruido.json`; el centinela anota cuándo lo aplica.

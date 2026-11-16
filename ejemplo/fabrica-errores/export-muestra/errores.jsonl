@@ -1,0 +1,4 @@
+{"t": "2026-11-16T10:00:01", "mensaje": "Not Found /wp-admin/setup.php", "ruta": "/wp-admin/setup.php", "origen": "web", "stack": "Error: Not Found\n    at router (/app/server.js:42:15)"}
+{"t": "2026-11-16T10:00:02", "mensaje": "Not Found /wp-admin/setup.php", "ruta": "/wp-admin/setup.php", "origen": "web", "stack": "Error: Not Found\n    at router (/app/server.js:42:15)"}
+{"t": "2026-11-16T10:01:00", "mensaje": "TypeError: Cannot read properties of null (reading 'precio')", "ruta": "/api/carrito", "origen": "api", "stack": "TypeError: Cannot read properties of null\n    at calcularTotal (/app/carrito.js:88:23)"}
+{"t": "2026-11-16T10:02:00", "mensaje": "PaymentProviderError: insufficient balance", "ruta": "/api/pago", "origen": "api", "stack": "PaymentProviderError: insufficient balance\n    at cobrar (/app/pago.js:31:9)"}

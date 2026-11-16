@@ -44,7 +44,7 @@ En los dos casos **todo paso pasa por `herramientas/obs.py`**. Copia `plantillas
 
 ## Observabilidad: no es opcional
 
-Una fábrica sin telemetría no se puede mejorar: cuando algo sale mal, no sabes qué pieza fue. Antes de dar la fábrica por terminada, comprueba estas cuatro cosas:
+Una fábrica sin telemetría no se puede mejorar: cuando algo sale mal, no sabes qué pieza fue. Antes de dar la fábrica por terminada, comprueba estas cinco cosas:
 - [ ] **Cada paso**, de código o de agente, se ejecuta a través de `obs.py paso`, o deja su `obs.py nota` si lo lanza un subagente.
 - [ ] **Cada paso de agente** apunta sus decisiones con `obs.py nota` y, si falla, deja el motivo en la última línea.
 - [ ] **Cada métrica la apunta un solo sitio,** a ser posible el código. Si la apuntan también los agentes, el resumen la cuenta dos veces.
