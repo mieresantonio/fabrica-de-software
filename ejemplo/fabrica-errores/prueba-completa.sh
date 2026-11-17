@@ -30,9 +30,10 @@ for cmd in git node npm python3; do
   command -v "$cmd" >/dev/null || fallo "falta $cmd en el PATH"
 done
 [ -f "$ENTRADA" ] || fallo "falta $ENTRADA"
-# Los fixtures deben ser ejecutables, pero un clon fresco puede traerlos
-# sin el bit +x (la subida por snapshot no conserva modos): asegurarlo aquí.
-chmod +x "$FIXTURES/bin/claude" "$FIXTURES/bin/gh"
+# Los fixtures y fabrica.sh deben ser ejecutables, pero un clon fresco puede
+# traerlos sin el bit +x (la subida por snapshot no conserva modos):
+# asegurarlo aquí para que la prueba sea autosuficiente.
+chmod +x "$FIXTURES/bin/claude" "$FIXTURES/bin/gh" ./fabrica.sh
 [ -x "$FIXTURES/bin/claude" ] || fallo "falta $FIXTURES/bin/claude (ejecutable)"
 [ -x "$FIXTURES/bin/gh" ] || fallo "falta $FIXTURES/bin/gh (ejecutable)"
 [ -f "$FIXTURES/repo-api/package.json" ] || fallo "falta $FIXTURES/repo-api"
@@ -68,7 +69,13 @@ correr() {
     ./fabrica.sh "$ENTRADA" > "$log" 2>&1
   codigo=$?
   run="$(sed -n 's/^▶ run: //p' "$log" | head -n 1)"
-  [ -n "$run" ] && [ -d "$run" ] || fallo "$nombre: no se creó la ejecución (ver $log)"
+  if [ -z "$run" ] || [ ! -d "$run" ]; then
+    # Sin ejecución no hay nada que comprobar: avisar por stderr y devolver
+    # una línea parseable (1||repo) para que el llamador informe con el log.
+    echo "FALLO: $nombre: no se creó la ejecución (ver $log)" >&2
+    echo "1||$repo"
+    return 1
+  fi
   echo "$codigo|$run|$repo"
 }
 

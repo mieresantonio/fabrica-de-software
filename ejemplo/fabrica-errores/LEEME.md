@@ -19,6 +19,10 @@ python3 herramientas/obs.py ver runs/2026-11-03-0905-a1f3
 python3 herramientas/obs.py resumen
 ```
 
+> **Tras clonar el repo:** los scripts llegan sin permiso de ejecución
+> (este repo no conserva el bit +x). Ejecuta `chmod +x *.sh fixtures/bin/*`
+> en esta carpeta, o invoca cada script con `bash` (p. ej. `bash prueba-pasos.sh`).
+
 ## Prueba de humo (sin agente ni API)
 
 Los dos primeros pasos son código y se pueden verificar sin ejecutar
