@@ -6,7 +6,9 @@ cd "$(dirname "$0")"
 
 # Los pasos de agente se lanzan con pasos/agente.sh (permisos mínimos, coste, guardia). Si tu agente
 # no es Claude Code, adapta su bloque «LLAMADA».
-export REPO="${REPO:-$(pwd)}"   # el proyecto sobre el que trabaja la fábrica, en ruta absoluta
+REPO_ENTRADA="${REPO:-$(pwd)}"
+[ -d "$REPO_ENTRADA" ] || { echo "FALLO: no existe el proyecto en '$REPO_ENTRADA'. Indica la ruta real con REPO=/ruta/a/tu/proyecto"; exit 1; }
+export REPO="$(cd "$REPO_ENTRADA" && pwd)"   # el proyecto sobre el que trabaja la fábrica, en ruta absoluta
 OBS="python3 herramientas/obs.py"
 MAX_REINTENTOS=2
 

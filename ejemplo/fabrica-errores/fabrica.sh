@@ -3,7 +3,9 @@
 set -uo pipefail
 cd "$(dirname "$0")"
 
-export REPO="$(cd "${REPO:-../api}" && pwd)"   # el repo de la API, en ruta absoluta
+REPO_ENTRADA="${REPO:-../api}"
+[ -d "$REPO_ENTRADA" ] || { echo "FALLO: no existe el proyecto en '$REPO_ENTRADA'. Indica la ruta real con REPO=/ruta/a/tu/proyecto"; exit 1; }
+export REPO="$(cd "$REPO_ENTRADA" && pwd)"   # el repo de la API, en ruta absoluta
 OBS="python3 herramientas/obs.py"
 MAX_REINTENTOS=2
 
@@ -23,16 +25,16 @@ codigo 02-centinela python3 pasos/02-centinela.py
 agente 03-investigar
 agente 04-clasificar
 
-# LOOP: arreglar → tests → revisar; cualquier fallo vuelve a 05 con el motivo en devuelto.md
+# LOOP: arreglar → tests → revisar; cualquier fallo vuelve a 05 con el motivo en devuelto-tests.md o devuelto-revision.md
 if hay arreglo; then
   i=1
   while true; do
-    $OBS paso "$RUN" 05-arreglar --intento "$i" -- bash pasos/agente.sh 05-arreglar "" "Intento $i: si existe $RUN/devuelto.md, arregla exactamente lo que dice." || parar "falló 05-arreglar"
-    if $OBS paso "$RUN" 06-tests --intento "$i" -- bash pasos/06-tests.sh > "$RUN/devuelto.md" 2>&1 \
-       && $OBS paso "$RUN" 07-revisar --intento "$i" -- bash pasos/agente.sh 07-revisar > "$RUN/devuelto.md" 2>&1; then
-      rm -f "$RUN/devuelto.md"; break
+    $OBS paso "$RUN" 05-arreglar --intento "$i" -- bash pasos/agente.sh 05-arreglar "" "Intento $i: si existen $RUN/devuelto-tests.md o $RUN/devuelto-revision.md, arregla exactamente lo que dicen." || parar "falló 05-arreglar"
+    if $OBS paso "$RUN" 06-tests --intento "$i" -- bash pasos/06-tests.sh > "$RUN/devuelto-tests.md" 2>&1 \
+       && $OBS paso "$RUN" 07-revisar --intento "$i" -- bash pasos/agente.sh 07-revisar > "$RUN/devuelto-revision.md" 2>&1; then
+      rm -f "$RUN/devuelto-tests.md" "$RUN/devuelto-revision.md"; break
     fi
-    (( i > MAX_REINTENTOS )) && parar "el arreglo no pasa tests/revisión tras $i intentos (ver devuelto.md)"
+    (( i > MAX_REINTENTOS )) && parar "el arreglo no pasa tests/revisión tras $i intentos (ver devuelto-tests.md y devuelto-revision.md)"
     i=$((i + 1))
   done
 fi

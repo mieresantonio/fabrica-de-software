@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# 06 tests (código): tests + linter en cada rama de arreglo. Si algo falla, la salida vuelve a 05 como devuelto.md.
+# 06 tests (código): tests + linter en cada rama de arreglo. Si algo falla, la salida vuelve a 05 como devuelto-tests.md.
 # La última línea es el motivo que registra obs.py: nombra las ramas en rojo, no solo que las hay.
 set -uo pipefail
-REPO="${REPO:-../api}"
+DIR="$(cd "$(dirname "$0")/.." && pwd)"
+REPO="${REPO:-$DIR/../api}"
 arreglos="${FABRICA_RUN:?falta FABRICA_RUN}/arreglos.json"
 [ -f "$arreglos" ] || { echo "falta arreglos.json: 05 no dejó ramas que probar"; exit 1; }
 python3 -c 'import json,sys; sys.exit(0 if json.load(open(sys.argv[1])) else 1)' "$arreglos" \

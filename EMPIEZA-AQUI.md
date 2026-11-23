@@ -3,7 +3,8 @@
 Gracias por descargarlo. Esta carpeta convierte a tu agente de IA en tu guía para montar tu propia fábrica de software: te hace las preguntas necesarias, diseña la fábrica contigo y la construye hasta que funciona.
 
 ## Cómo empezar (2 minutos)
-1. Descomprime la carpeta donde quieras.
+1. Clona el repositorio donde quieras (o descarga la carpeta, si prefieres no usar git):
+   `git clone https://github.com/mieresantonio/fabrica-de-software.git`
 2. Ábrela con tu agente: Claude Code, Codex, Cursor, Gemini CLI… En la terminal sería `cd fabrica-de-software` y luego `claude`, `codex` o el que uses.
 3. Escríbele: **«Lee PARA-TU-AGENTE.md y empecemos»**.
 

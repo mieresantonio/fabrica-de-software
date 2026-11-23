@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """02 centinela (código): descarta el ruido conocido según cerebro/reglas-ruido.json, salvo picos."""
 import json, os, subprocess, sys
+from pathlib import Path
 
 run = os.environ["FABRICA_RUN"]
-cfg = json.load(open("cerebro/reglas-ruido.json", encoding="utf-8"))
+FABRICA = Path(__file__).resolve().parent.parent
+cfg = json.load(open(FABRICA / "cerebro" / "reglas-ruido.json", encoding="utf-8"))
 errores = json.load(open(f"{run}/errores.json", encoding="utf-8"))
 
 def nota(texto):
-    subprocess.run([sys.executable, "herramientas/obs.py", "nota", run, "02-centinela", texto])
+    subprocess.run([sys.executable, str(FABRICA / "herramientas" / "obs.py"), "nota", run, "02-centinela", texto])
 
 def regla_que_aplica(e):
     for r in cfg["reglas"]:
@@ -33,5 +35,5 @@ for e in errores:
 
 json.dump(candidatos, open(f"{run}/candidatos.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 json.dump(descartados, open(f"{run}/descartados.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-subprocess.run([sys.executable, "herramientas/obs.py", "metrica", run, "02-centinela", "descartados", str(len(descartados))])
+subprocess.run([sys.executable, str(FABRICA / "herramientas" / "obs.py"), "metrica", run, "02-centinela", "descartados", str(len(descartados))])
 print(f"{len(candidatos)} candidatos · {len(descartados)} descartados como ruido")

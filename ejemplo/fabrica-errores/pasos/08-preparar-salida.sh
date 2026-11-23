@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # 08 preparar salida (código): sube las ramas OK y abre las PRs EN BORRADOR. El merge y los tickets esperan a la persona.
 set -uo pipefail
-REPO="${REPO:-../api}"; OBS="python3 herramientas/obs.py"
+DIR="$(cd "$(dirname "$0")/.." && pwd)"
+REPO="${REPO:-$DIR/../api}"; OBS="python3 $DIR/herramientas/obs.py"
+: "${FABRICA_RUN:?falta FABRICA_RUN (lo exporta fabrica.sh)}"
 for f in "$FABRICA_RUN"/revision/*.json; do
   [ -e "$f" ] || continue
   firma=$(basename "$f" .json)

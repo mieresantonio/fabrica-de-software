@@ -18,3 +18,9 @@ dist/
 
 # Sistema operativo
 .DS_Store
+# Ejecuciones de la fábrica (salvo la muestra versionada del ejemplo)
+ejemplo/fabrica-errores/runs/*
+!ejemplo/fabrica-errores/runs/2026-11-03-0905-a1f3/
+# Ejecuciones de fabrica-videos (salvo la muestra versionada)
+ejemplo/fabrica-videos/runs/*
+!ejemplo/fabrica-videos/runs/2026-11-23-demo-lY7fvJ6yPAI/

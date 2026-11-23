@@ -5,6 +5,12 @@
 # Uso: ./prueba-todo.sh
 set -uo pipefail
 cd "$(dirname "$0")"
+# Las dos copias de obs.py deben ser idénticas: si difieren, la telemetría
+# de la plantilla y la del ejemplo ya no son la misma.
+if ! cmp -s ../plantillas/herramientas/obs.py herramientas/obs.py; then
+  echo "FALLO: plantillas/herramientas/obs.py y ejemplo/fabrica-errores/herramientas/obs.py difieren; sincronízalas"
+  exit 1
+fi
 fallo=0
 for prueba in prueba-pasos.sh prueba-completa.sh prueba-centinela.sh; do
   echo "=== $prueba ==="

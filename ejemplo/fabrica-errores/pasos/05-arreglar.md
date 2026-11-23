@@ -5,7 +5,7 @@
 ## Lee antes de empezar
 - `AGENTS.md`, `cerebro/que-es-bien.md`, `cerebro/ejemplos/buen-arreglo.md` y `cerebro/ejemplos/mal-arreglo.md`, `cerebro/lecciones.md`.
 - `$FABRICA_RUN/clasificacion.json` y el diagnóstico de cada error.
-- **Si existe `$FABRICA_RUN/devuelto.md`:** te han devuelto el trabajo. Arregla exactamente lo que dice y nada más.
+- **Si existen `$FABRICA_RUN/devuelto-tests.md` o `$FABRICA_RUN/devuelto-revision.md`:** te han devuelto el trabajo. Arregla exactamente lo que dicen y nada más.
 
 ## Qué haces, por cada error `arreglo`
 1. Crea la rama `fabrica/<firma>` desde `main`, en el repositorio de `contexto.md`.

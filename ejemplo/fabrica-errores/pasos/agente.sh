@@ -18,6 +18,9 @@ FABRICA="$(pwd)"
 REPO="$(cd "${REPO:-$FABRICA}" && pwd)"   # SIEMPRE absoluta: el agente no sabe qué es «..»
 
 antes="$(git -C "$REPO" status --porcelain 2>/dev/null)"
+if ! git -C "$REPO" rev-parse --git-dir >/dev/null 2>&1; then
+  echo "AVISO: $REPO no es un repositorio git: la guardia (detectar que el agente toque el proyecto) está desactivada en este paso" >&2
+fi
 PROMPT="Eres el paso $PASO de esta fábrica. La fábrica está en $FABRICA y esta ejecución en FABRICA_RUN=$RUN (rutas absolutas).
 Lee $FABRICA/AGENTS.md y sigue $FABRICA/pasos/$PASO.md al pie de la letra.
 El proyecto sobre el que trabajas está en $REPO: cualquier git, hazlo con git -C $REPO. Escribe solo dentro de $RUN.

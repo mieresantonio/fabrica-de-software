@@ -129,8 +129,9 @@ if modo == "bueno":
     rama = subprocess.run(["git", "-C", repo, "show-ref", "--verify", "--quiet",
                            f"refs/heads/{arreglos[0]['rama']}"]).returncode == 0
     comprobar(rama, f"la rama {arreglos[0]['rama']} no existe en el repo falso")
-    comprobar(not (run / "devuelto.md").exists(),
-              "devuelto.md no debería existir: el loop terminó limpio")
+    comprobar(not (run / "devuelto-tests.md").exists()
+              and not (run / "devuelto-revision.md").exists(),
+              "no debería quedar ningún archivo de devolución: el loop terminó limpio")
     comprobar(len(notas_pr) == 1, f"esperaba 1 nota de PR, hay {len(notas_pr)}")
     url = notas_pr[0].split("PR en borrador:", 1)[1].split("·")[0].strip()
     comprobar(url == PR_ESPERADA,

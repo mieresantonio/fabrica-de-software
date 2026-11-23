@@ -47,7 +47,15 @@ def leer(run):
     p = Path(run) / "eventos.jsonl"
     if not p.exists():
         return []
-    return [json.loads(l) for l in p.read_text(encoding="utf-8").splitlines() if l.strip()]
+    eventos = []
+    for l in p.read_text(encoding="utf-8").splitlines():
+        if not l.strip():
+            continue
+        try:
+            eventos.append(json.loads(l))
+        except json.JSONDecodeError:
+            print(f"aviso obs.py: línea corrupta en {p}, se ignora", file=sys.stderr)
+    return eventos
 
 
 def cmd_nuevo(a):
@@ -55,6 +63,9 @@ def cmd_nuevo(a):
     run = RUNS / rid
     (run / "logs").mkdir(parents=True)
     entrada = a.entrada or ""
+    if entrada and not Path(entrada).exists() and ("/" in entrada or "\\" in entrada):
+        print(f"aviso obs.py: la entrada parece una ruta que no existe ({entrada}); se guarda como texto",
+              file=sys.stderr)
     if entrada and Path(entrada).exists():
         (run / "entrada").mkdir()
         src = Path(entrada)
@@ -75,10 +86,19 @@ def cmd_paso(a):
         sys.exit("obs.py paso: falta el comando tras «--»")
     evento(run, tipo="paso-inicio", paso=nombre, intento=a.intento, cmd=" ".join(cmd)[:300])
     t0 = time.time()
-    with open(log, "w", encoding="utf-8") as f:
-        p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                           env={**os.environ, "FABRICA_RUN": str(run), "FABRICA_PASO": nombre})
-        f.write(p.stdout)
+    try:
+        with open(log, "w", encoding="utf-8") as f:
+            p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                               env={**os.environ, "FABRICA_RUN": str(run), "FABRICA_PASO": nombre})
+            f.write(p.stdout)
+    except OSError:
+        motivo = f"no se encontró el comando: {cmd[0]}"
+        with open(log, "w", encoding="utf-8") as f:
+            f.write(motivo + "\n")
+        evento(run, tipo="paso-fin", paso=nombre, intento=a.intento, ok=False, codigo=127,
+               segundos=round(time.time() - t0, 1), log=str(log.relative_to(run)), motivo=motivo)
+        print(motivo, file=sys.stderr)
+        sys.exit(127)
     dur = round(time.time() - t0, 1)
     ok = p.returncode == 0
     ultima = next((l for l in reversed(p.stdout.strip().splitlines()) if l.strip()), "")

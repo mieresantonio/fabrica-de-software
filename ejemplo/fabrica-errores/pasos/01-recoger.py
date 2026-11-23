@@ -2,8 +2,10 @@
 """01 recoger (código): agrupa los eventos de errores.jsonl por firma (mensaje + primera línea del stack)."""
 import hashlib, json, os, subprocess, sys
 from collections import OrderedDict
+from pathlib import Path
 
 run, entrada = os.environ["FABRICA_RUN"], sys.argv[1]
+FABRICA = Path(__file__).resolve().parent.parent
 grupos = OrderedDict()
 with open(entrada, encoding="utf-8") as f:
     for n, linea in enumerate(f, 1):
@@ -23,5 +25,5 @@ with open(entrada, encoding="utf-8") as f:
         g["ultima"] = ev.get("t") or g["ultima"]
 
 json.dump(list(grupos.values()), open(f"{run}/errores.json", "w", encoding="utf-8"), ensure_ascii=False, indent=2)
-subprocess.run([sys.executable, "herramientas/obs.py", "metrica", run, "01-recoger", "errores_unicos", str(len(grupos))])
+subprocess.run([sys.executable, str(FABRICA / "herramientas" / "obs.py"), "metrica", run, "01-recoger", "errores_unicos", str(len(grupos))])
 print(f"{len(grupos)} errores únicos en {sum(g['veces'] for g in grupos.values())} eventos")

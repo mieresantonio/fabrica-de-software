@@ -13,11 +13,21 @@ No está pensada para ejecutarse tal cual en tu proyecto: el contexto describe u
 - **La telemetría** (`herramientas/obs.py`).
 - **Una ejecución de muestra** en `runs/`.
 
+## Verificarlo todo de una vez
+
+```
+bash prueba-todo.sh
+```
+
+Corre las tres pruebas en orden —humo, completa y centinela— y sale 1 si alguna falla. Es la primera cosa que conviene correr tras clonar el repo o tocar cualquier pieza. Las secciones de abajo explican qué comprueba cada una.
+
 Prueba la telemetría con la ejecución de muestra:
 ```
 python3 herramientas/obs.py ver runs/2026-11-03-0905-a1f3
 python3 herramientas/obs.py resumen
 ```
+
+> **Nota:** la ejecución de muestra trae los logs de los pasos de código y todas las salidas de la fábrica, pero no los logs de los pasos de agente (investigar, clasificar, arreglar, revisar e informe). Sirve para ver la telemetría y el resultado final; para ver una ejecución completa con todos los logs, corre la prueba completa (`bash prueba-completa.sh`) y revisa su ejecución antes de que se borre.
 
 > **Tras clonar el repo:** los scripts llegan sin permiso de ejecución
 > (este repo no conserva el bit +x). Ejecuta `chmod +x *.sh fixtures/bin/*`
@@ -77,8 +87,4 @@ También se sabotea a sí misma en una copia sombra (sin tocar el repo):
 con `umbral_pico` 10 → 9 y con `bots-404` sin `y_ruta_empieza_por`.
 Cada sabotaje debe poner la suite en rojo.
 
-Las tres pruebas juntas, en orden:
-
-```
-./prueba-todo.sh
-```
+Las tres pruebas juntas se corren con `bash prueba-todo.sh`, como se explica al inicio de este documento.

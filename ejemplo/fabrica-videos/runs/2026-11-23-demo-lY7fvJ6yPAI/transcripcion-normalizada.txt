@@ -1,0 +1,315 @@
+[00:00:00] Esta conferencia dura 45 minutos. Codex
+la ha visto en 90 segundos, frames,
+[00:00:04] audios, todo. Y ahora me puede responder
+cualquier pregunta sobre ella. Codex no
+[00:00:09] tiene un modelo de vídeo propio.
+Normalmente no puede ver vídeos, pero
+[00:00:12] con esta skill descompone el vídeo en
+dos cosas. Un vídeo es básicamente
+[00:00:17] fotogramas y la transcripción de este.
+Exactamente lo que un agente de IA ya
+[00:00:21] sabe leer. Lo que el 90% de las
+herramientas de vídeo que existen no
+[00:00:25] hacen, solamente leen el transcript, la
+transcripción. Esta skill le da las dos
+[00:00:30] cosas, con el tiempo y todo
+sincronizado. Y lo más importante es que
+[00:00:34] es prácticamente gratis. La mayoría de
+vídeos de YouTube no cuestan ni un
+[00:00:37] céntimo. La transcripción. En los
+próximos 8 minutos te voy a enseñar cómo
+[00:00:41] funciona, cómo lo instalas en 5 minutos
+y casos de uso, cómo me han cambiado a
+[00:00:46] mí cómo consumo contenido. Antes de
+entrar, soy Jordi Segura, cofundador de
+[00:00:50] Centella Education y Centella
+Consulting. En la parte consultoría
+[00:00:52] implementamos soluciones de IA para
+empresas reales, automatizaciones,
+[00:00:56] agentes de IA como hoy o flujos de
+trabajo. Y una de las cosas que más nos
+[00:01:00] costaba antes era el tiempo que
+tardábamos en procesar contenido, vídeos
+[00:01:05] de formación, demos de competidores,
+webinars de clientes. Esta skill ha
+[00:01:08] cambiado eso por completo en nuestro
+equipo. Centella tiene más de 110.000
+[00:01:13] suscriptores en YouTube. Hemos formado a
+más de medio millón de personas en IA. Y
+[00:01:17] lo que te voy a enseñar hoy es lo que
+nosotros también usamos internamente.
+[00:01:21] Así que si funciona en nuestra
+consultoría, probablemente te funcione a
+[00:01:24] ti también. La diferencia entre esta
+skill y cualquier otra herramienta de
+[00:01:27] resumen está en una sola cosa. Un vídeo,
+como he contado al principio, son dos
+[00:01:31] cosas, fotogramas y audio, nada más. La
+mayoría de herramientas solamente leen
+[00:01:36] la transcripción automática de YouTube.
+Se pierde todo lo que pasa en la
+[00:01:39] pantalla, gráficas, demos, cambios de
+diapositivas. Esta skill extrae los
+[00:01:44] fotogramas, cada pocos segundos y los
+combina con la transcripción, con el
+[00:01:48] tiempo sincronizado. El resultado, a
+Codex le puedes decir, ¿qué sucede al
+[00:01:53] minuto 3:42 y ¿Y aparece esta gráfica?
+¿Qué dice el ponente? Te doy un ejemplo
+[00:01:58] real, una conferencia de Sam Altman
+sobre cómo crear startups. Si los frames
+[00:02:03] Codex no vería los datos, las gráficas
+que salen en pantalla. Bien, ahora que
+[00:02:07] sabes por qué funciona diferente, veamos
+cómo se instala. La skill os la voy a
+[00:02:11] dejar en la descripción, ¿de acuerdo?
+Veréis que es esta de aquí, está en
+[00:02:15] GitHub, es pública. Copiáis esto y vamos
+a ir entonces, una vez copiada, dentro
+[00:02:20] de Codex o de tu agente de inteligencia
+artificial, que también puede funcionar.
+[00:02:25] Y sí, hay dos herramientas que instalan
+la skill automáticamente. Las conoces
+[00:02:29] aunque no lo sepas. Fijaos que yo puedo
+decirle aquí directamente "Instala la
+[00:02:34] skill y todo lo correspondiente
+a Codex." Y Codex empezará a pensar. La
+[00:02:40] primera que va a ser YouTube-DLP,
+el descargador de vídeo más usado del
+[00:02:44] mundo, lleva más de una década con
+nosotros. Es como un guardar como para
+[00:02:49] cualquier vídeo de internet. La segunda,
+FFmpeg, es el motor de vídeo que usa
+[00:02:53] básicamente todo el software que has
+tocado alguna vez para vídeo. No son MC
+[00:02:58] Pes, no son APIs, no son servicios
+externos. Se instalan en nuestro
+[00:03:02] ordenador, en nuestra máquina y listo.
+La única parte que puede costar dinero
+[00:03:05] es la transcripción. Y para YouTube
+normalmente no cuesta nada. La skill
+[00:03:09] agarra los subtítulos, la transcripción
+directamente. Para vídeos sin
+[00:03:13] subtítulos, como Loom, grabaciones de
+pantalla o Reels, vamos a utilizar
+[00:03:16] Whisper vía Grok. Grok es esto aquí, es
+una es un modelo de inteligencia
+[00:03:21] artificial, tiene un tier, tiene un plan
+gratuito que te da 2 horas. Para el 99%
+[00:03:27] de los casos que vamos a hacer es más
+que suficiente. Lo que tenéis que hacer
+[00:03:31] simplemente es ir a console.grok.com
+y poder crear una llave API, ¿de
+[00:03:36] acuerdo? Si le dais la llave API a
+vuestro agente de IA, en mi caso Codex,
+[00:03:40] y tendríais también esto configurado. Os
+dejo también el enlace en la
+[00:03:44] descripción. Y fijaos aquí que
+justamente ya ha instalado todo lo que
+[00:03:46] veníamos diciendo. A ver, aquí. Ha
+instalado FFmpeg y FFprobe enlazados
+[00:03:52] desde herramientas locales. YouTube-DL
+instalado y visible para Codex.
+[00:03:57] El modo por defecto ha configurado la
+skill. Luego, ¿qué nos dice? Pues
+[00:04:01] recuerda esto, reinicia tu agente de IA,
+ya sea Codex o sea Cloud o Code, para
+[00:04:05] que detecte la nueva skill. Luego pide
+algo, ahora lo veremos en casos
+[00:04:08] prácticos, como {guion} watch {barra}
+watch y el enlace del vídeo de YouTube.
+[00:04:13] Si el vídeo no tiene subtítulos, si el
+vídeo tiene subtítulos, perdón,
+[00:04:16] funcionará sin más. Si no, me tienes que
+dar una wiki de Grok, que es lo que os
+[00:04:21] he enseñado anteriormente. Ahora sí, con
+esto ya lo tienes instalado. Ahora la
+[00:04:26] parte buena, ¿para qué lo uso yo? Te voy
+a enseñar ahora los diferentes casos de
+[00:04:30] uso y probablemente el último es el que
+más me ha cambiado la vida. Me di,
+[00:04:35] bueno, tardé semanas en darme cuenta que
+esto se podía hacer. El primer caso de
+[00:04:38] uso que te voy a enseñar es marketing,
+análisis de competencia. Vamos a tomar
+[00:04:42] un vídeo que está funcionando bien en tu
+sector, por ejemplo, este de aquí. Un
+[00:04:46] vídeo de Notebook LM y le voy a pedir a
+Codex qué es lo que sucede en los 30
+[00:04:51] primeros segundos de la pantalla. Le voy
+a pedir a Codex también que analice el
+[00:04:54] hook, qué hay en pantalla, en qué
+segundo entra el interrupt pattern o
+[00:04:59] este patrón de interrupción para que el
+vídeo sea top. Un vídeo de 20 minutos
+[00:05:04] que tendré que hacer pausa, rebobinar,
+tomar notas. Ahora ya no. Mi agente de
+[00:05:09] inteligencia artificial es capaz de
+observarlo, verlo, escucharlo. Vamos a
+[00:05:14] ver cómo, voy a copiar el enlace de
+YouTube. Vamos a irnos a nuestro Codex.
+[00:05:20] Y le voy a pedir ahora {guion} watch,
+¿de acuerdo?
+[00:05:24] Fijaos aquí que ya se activa esta skill.
+Que mire justamente este enlace vídeo y
+[00:05:31] ahora os pego el prompt que tengo
+preparado. Pegamos el prompt y vamos a
+[00:05:35] analizar justamente este vídeo. Fijaos,
+Codex empezará a pensar y creo que es
+[00:05:39] interesante también que veamos cómo lo
+va a hacer y que empieza, fijaos. Puede
+[00:05:43] analizar solamente el tramo, él lo
+detecta también, los 60 segundos.
+[00:05:47] solamente el tramo 000 al 1.00.
+Empieza a separar después los primeros
+[00:05:53] 15 segundos con una lupa de retención.
+Lo empieza a ejecutar todo el, lo más
+[00:05:59] bonito, recordad, un vídeo se separa en
+esto, es un conjunto de imágenes o
+[00:06:03] frames
+sumándole una transcripción. Esta skill
+[00:06:07] puede leer ambas. Vamos a ver qué
+necesita el, fijad que puede llegar a
+[00:06:12] fallar, él empieza a seguir simplemente
+a intentarlo, volver a intentarlo hasta
+[00:06:16] que tenga validado el objetivo final.
+Fijad aquí, superinteresante, fijad cómo
+[00:06:20] incluso hace capturas de pantalla del
+vídeo, lo estabais viendo antes. Está
+[00:06:25] las palabras con tiempos y fijad cómo
+nos muestra incluso las capturas.
+[00:06:31] Brutal, eh. Él va viendo el hook, va
+tomando detalles, va, está razonando,
+[00:06:35] esto no es la respuesta final, eh. Pero
+fijad que ya tengo suficientes frames
+[00:06:40] para responder lo pedido. Voy a revisar
+un poquito más, sigue haciendo capturas
+[00:06:43] de pantalla del vídeo, esto está pasando
+en tiempo real y yo no estoy tocando
+[00:06:46] nada, yo no estoy escribiendo nada, ni
+le he dado más información que la que
+[00:06:50] habéis visto en el prompt. Esta skill,
+repito, es capaz de ver imágenes, es
+[00:06:55] capaz de utilizar la transcripción.
+Fijad aquí, la transcripción confirma un
+[00:06:58] hook muy compacto, fecha concreta, nadie
+se enteró, pero dentro, pam pam pam, a
+[00:07:03] ver cuál es la respuesta final. Y aquí
+tenemos el resultado, ¿no? Que fijad el
+[00:07:07] análisis que ha hecho. Eh, ¿qué hay en
+pantalla los primeros 15 15 segundos?
+[00:07:11] ¿Cuál es el hook que nos ha dado? El
+b-roll que entra, la interfaz de
+[00:07:15] notebook LM, el patrón del hook, noticia
+infravalorada, contradicción, promesa de
+[00:07:20] sistema, el primer patrón de
+interrupción.
+[00:07:23] Lo que podría debilitarlo, tarda un poco
+en aterrizar el resultado concreto para
+[00:07:27] el espectador. Tengo un analista de
+YouTube, un experto en ello que puede
+[00:07:31] analizar cualquier tipo de cosa. Mi
+equipo no tiene tiempo, tranquilo,
+[00:07:35] tienes un agente o una serie de agentes
+de IA que sí que lo tienen. Voy con el
+[00:07:38] segundo ejemplo y el segundo ejemplo lo
+voy a complicar un poquito más para que
+[00:07:41] veáis el valor real de cómo esta skill,
+de cómo la skill que acabamos de ver es
+[00:07:46] capaz de hacer cosas increíbles. Voy a
+ir con dos conferencias de Sam Altman,
+[00:07:51] del fundador de Open AI. Una de 48
+minutos, otra de 16 minutos, juntas una
+[00:07:59] hora, casi casi, de vídeo. ¿Y qué voy a
+pedirle? Le voy a pedir esto aquí. Le
+[00:08:05] voy a escribir watch.
+Primero, ¿de acuerdo? Esta es la
+[00:08:10] primera. No pasa nada. Voy a poner
+también la segunda, el segundo enlace.
+[00:08:16] Voy a ponerlo aquí.
+El segundo enlace. El prompt es este
+[00:08:19] aquí.
+Cuando hayas visto los vídeos, genera
+[00:08:22] una nota estructurada en formato
+Obsidian con el título, el resumen, el
+[00:08:26] hook, la estructura, las ideas claves y
+el porqué el vídeo funciona o porqué
+[00:08:30] incluso el vídeo es interesante, ¿no?
+Incluso podríamos poner aquí
+[00:08:34] las ideas de cada uno de ellos.
+El formato Obsidian te lo voy a enseñar
+[00:08:40] en cuestión de unos minutos. Me va a
+permitir tener un mapa mental con toda
+[00:08:44] la información ordenada. Eso es lo que
+llamamos un segundo cerebro. Y esto
+[00:08:48] empezará
+a ejecutar los vídeos, ¿de acuerdo?
+[00:08:52] Vamos a ir viendo cómo lo va haciendo.
+Aquí veis ya que ha terminado después de
+[00:08:56] 3 minutos nos da las notas que están
+aquí, que yo esto lo puedo abrir.
+[00:09:01] Recordad que mi agente de IA trabaja
+directamente en mi ordenador, por lo
+[00:09:05] tanto, tengo las notas. Y ahora vamos a
+ver cómo o qué significa Obsidian.
+[00:09:10] Cuando lo abro con Obsidian, lo que me
+permite Obsidian al final es un
+[00:09:13] visualizador de estos archivos que
+siempre llamamos markdown. Por lo tanto,
+[00:09:17] todas las notas que vaya poniendo van a
+quedar aquí y tienen unos tags.
+[00:09:20] Entonces, puedo ir relacionando. ¿Qué
+significa esto aterrizándolo muchísimo?
+[00:09:25] Que todas las notas que vayas creando en
+notas de markdown, en formato markdown,
+[00:09:29] las reuniones, los vídeos que esta skill
+que vaya digiriendo, si los vas pegando
+[00:09:34] aquí de manera ordenada, puede llegarte
+a relacionarlo absolutamente todo. Es
+[00:09:39] una pasada. Te aconsejo que lo
+utilicemos y si lo quieres dejar en los
+[00:09:42] comentarios y vamos a hacer un vídeo
+detallando cómo utilizar este segundo
+[00:09:45] cerebro. Y aquí, en este punto, es donde
+me gustaría contarte una cosa que me
+[00:09:49] sorprendió muchísimo cuando lo calculé,
+que es el precio. Estás viendo este
+[00:09:54] vídeo y piensas, bien, esto de barra
+watch me interesa, pero qué más tengo
+[00:09:58] que tener en mi stack de inteligencia
+artificial. Tengo exactamente lo que
+[00:10:01] necesitas. He hecho una selección de las
+15 únicas herramientas de IA que de
+[00:10:05] verdad necesitas hoy como profesional.
+No te voy a dar una lista de 50 de las
+[00:10:10] que no usarás 48. Son 15 que utilizamos
+en Centella. El resto es ruido. Te la
+[00:10:15] dejo gratis en el enlace y en la
+descripción. Descárgala y tenla a mano.
+[00:10:19] Dicho esto, ahora sí, vamos a ver cuánto
+cuesta realmente.
+[00:10:23] Y esto es importante porque la skill,
+esta habilidad, escala automáticamente
+[00:10:28] el número de frames según la duración. A
+partir de 30 minutos topa en 100 frames.
+[00:10:33] Un vídeo de 30 minutos y uno de 2 horas
+cuestan prácticamente lo mismo,
+[00:10:36] alrededor de 1 euro por sesión. La
+transcripción de YouTube, 0 euros,
+[00:10:40] subtítulos gratis. Grok para transcribir
+cubre de sobras. En 2 semanas de uso
+[00:10:45] diario aún sigue teniendo el tier, el
+plan gratuito. Así que ahora sí que sí,
+[00:10:50] ya sabes cómo funciona barra watch, por
+qué es diferente a cualquier otra
+[00:10:53] herramienta de resumen de vídeo, cómo
+instalarlo en 5 minutos y casos de uso
+[00:10:58] que puedes empezar a usar hoy mismo.
+Ahora te toca a ti. Abre Codex o tu
+[00:11:02] agente de IA, Claude Code, escribe barra
+watch, pega una URL de cualquier vídeo
+[00:11:06] que tengas pendiente y deja que Codex lo
+vea por ti. Si el vídeo te ha sido útil,
+[00:11:11] dale like y suscríbete, activa la
+campanita y nos vemos en el próximo
+[00:11:15] vídeo. Hasta luego.
