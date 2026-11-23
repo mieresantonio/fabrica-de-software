@@ -1,0 +1,72 @@
+# CI de fabrica-de-software.
+#
+# Qué comprueba, en cada push a main y en cada pull request:
+#   1. Sintaxis de todos los scripts del repo (.sh con bash -n, .py con py_compile).
+#   2. La prueba de pasos de cada ejemplo (un job por ejemplo).
+#
+# Añadir un ejemplo nuevo (p. ej. fabrica-videos): añadir una entrada a la
+# matriz `ejemplo` de abajo; nada más cambia.
+#
+# La insignia del README apunta a este archivo:
+#   https://github.com/mieresantonio/fabrica-de-software/actions/workflows/ci.yml
+#
+# Supuesto no verificado sin leer el script (el primer run de CI lo confirma
+# o lo refuta): prueba-pasos.sh se ejecuta desde su propio directorio, por eso
+# el job usa working-directory. Si el primer run falla por rutas relativas,
+# el arreglo es quitar working-directory y correr
+# `bash ejemplo/fabrica-errores/prueba-pasos.sh` desde la raíz.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sintaxis:
+    name: Sintaxis de scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Comprobar sintaxis de los scripts de shell
+        run: |
+          set -euo pipefail
+          find . -type f -name '*.sh' -print -exec bash -n {} \;
+
+      - name: Comprobar sintaxis de los scripts de Python
+        run: |
+          set -euo pipefail
+          find . -type f -name '*.py' -print -exec python3 -m py_compile {} \;
+
+  ejemplo:
+    name: Ejemplo ${{ matrix.ejemplo.nombre }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ejemplo:
+          - nombre: fabrica-errores
+            ruta: ejemplo/fabrica-errores
+            prueba: prueba-pasos.sh
+          - nombre: fabrica-videos
+            ruta: ejemplo/fabrica-videos
+            prueba: prueba-pasos.sh
+    steps:
+      - uses: actions/checkout@v4
+
+      # El checkout de GitHub Actions conserva el bit +x guardado en git, pero
+      # el chmod deja la prueba autosuficiente aunque algún script lo pierda
+      # (misma lección del arreglo de prueba-completa del 16 nov 2026).
+      - name: Dar permiso de ejecución a los scripts del ejemplo
+        run: chmod +x "${{ matrix.ejemplo.ruta }}"/*.sh
+
+      - name: Correr la prueba de pasos
+        working-directory: ${{ matrix.ejemplo.ruta }}
+        run: bash "${{ matrix.ejemplo.prueba }}"
